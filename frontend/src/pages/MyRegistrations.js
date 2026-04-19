@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { registrationsAPI } from '../services/api';
+import api from '../services/api';
 
 const MyRegistrations = () => {
   const navigate = useNavigate();
   const [registrations, setRegistrations] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [downloading, setDownloading] = useState(null);
 
   useEffect(() => {
     fetchRegistrations();
@@ -19,6 +21,27 @@ const MyRegistrations = () => {
       console.error('Error fetching registrations:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const downloadAdmitCard = async (registrationId) => {
+    setDownloading(registrationId);
+    try {
+      const response = await api.get(`/admit-card/${registrationId}`, {
+        responseType: 'blob',
+      });
+      const url = window.URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `AdmitCard_REG${String(registrationId).padStart(4, '0')}.pdf`);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      alert('Failed to download admit card. Please try again.');
+    } finally {
+      setDownloading(null);
     }
   };
 
@@ -71,6 +94,15 @@ const MyRegistrations = () => {
                         onClick={() => navigate(`/payment/${reg.registration_id}`)}
                       >
                         Pay Now
+                      </button>
+                    )}
+                    {reg.status === 'confirmed' && (
+                      <button
+                        className="btn btn-primary"
+                        onClick={() => downloadAdmitCard(reg.registration_id)}
+                        disabled={downloading === reg.registration_id}
+                      >
+                        {downloading === reg.registration_id ? 'Downloading...' : '⬇ Admit Card'}
                       </button>
                     )}
                   </td>

@@ -60,6 +60,7 @@ class Exam(Base):
     duration = Column(Integer, nullable=False)
     total_marks = Column(Integer, nullable=False)
     fee = Column(Numeric(10, 2), default=300.00)
+    year = Column(Integer, nullable=False, default=1)
     is_active = Column(Boolean, default=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     

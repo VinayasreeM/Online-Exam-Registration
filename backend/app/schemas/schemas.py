@@ -70,6 +70,7 @@ class ExamBase(BaseModel):
     duration: int
     total_marks: int
     fee: Decimal = Field(default=Decimal("300.00"))
+    year: int = Field(default=1, ge=1, le=4)
 
 class ExamCreate(ExamBase):
     pass
@@ -81,6 +82,7 @@ class ExamUpdate(BaseModel):
     duration: Optional[int] = None
     total_marks: Optional[int] = None
     fee: Optional[Decimal] = None
+    year: Optional[int] = Field(None, ge=1, le=4)
     is_active: Optional[bool] = None
 
 class ExamResponse(ExamBase):

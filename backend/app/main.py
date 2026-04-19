@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from .core.database import engine, Base
 from .api import auth, exams, registrations, payments, admin
+from .api.admit_card import router as admit_card_router
 
 # Create database tables
 Base.metadata.create_all(bind=engine)
@@ -27,6 +28,7 @@ app.include_router(exams.router)
 app.include_router(registrations.router)
 app.include_router(payments.router)
 app.include_router(admin.router)
+app.include_router(admit_card_router)
 
 @app.get("/")
 def root():

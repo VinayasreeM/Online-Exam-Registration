@@ -62,6 +62,7 @@ const Exams = () => {
                 <p><strong>Date:</strong> {new Date(exam.exam_date).toLocaleDateString()}</p>
                 <p><strong>Duration:</strong> {exam.duration} minutes</p>
                 <p><strong>Total Marks:</strong> {exam.total_marks}</p>
+                <p><strong>For Year:</strong> Year {exam.year}</p>
                 <p><strong>Fee:</strong> ₹300.00</p>
               </div>
               <button

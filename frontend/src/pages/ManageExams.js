@@ -12,7 +12,8 @@ const ManageExams = () => {
     exam_date: '',
     duration: '',
     total_marks: '',
-    fee: '300',
+    fee: '',
+    year: '',
   });
 
   useEffect(() => {
@@ -45,6 +46,7 @@ const ManageExams = () => {
         duration: parseInt(formData.duration),
         total_marks: parseInt(formData.total_marks),
         fee: parseFloat(formData.fee),
+        year: parseInt(formData.year),
       };
 
       if (editingExam) {
@@ -64,6 +66,7 @@ const ManageExams = () => {
         duration: '',
         total_marks: '',
         fee: '300',
+        year: '1',
       });
       fetchExams();
     } catch (error) {
@@ -80,6 +83,7 @@ const ManageExams = () => {
       duration: exam.duration.toString(),
       total_marks: exam.total_marks.toString(),
       fee: exam.fee.toString(),
+      year: exam.year ? exam.year.toString() : '1',
     });
     setShowForm(true);
   };
@@ -174,6 +178,15 @@ const ManageExams = () => {
                 required
               />
             </div>
+            <div className="form-group">
+              <label>For Year</label>
+              <select name="year" value={formData.year} onChange={handleChange} required>
+                <option value="1">1st Year</option>
+                <option value="2">2nd Year</option>
+                <option value="3">3rd Year</option>
+                <option value="4">4th Year</option>
+              </select>
+            </div>
             <button type="submit" className="btn btn-primary">
               {editingExam ? 'Update Exam' : 'Create Exam'}
             </button>
@@ -189,6 +202,7 @@ const ManageExams = () => {
               <th>ID</th>
               <th>Exam Name</th>
               <th>Subject</th>
+              <th>For Year</th>
               <th>Date</th>
               <th>Duration</th>
               <th>Marks</th>
@@ -203,6 +217,7 @@ const ManageExams = () => {
                 <td>{exam.exam_id}</td>
                 <td>{exam.exam_name}</td>
                 <td>{exam.subject}</td>
+                <td>Year {exam.year}</td>
                 <td>{new Date(exam.exam_date).toLocaleDateString()}</td>
                 <td>{exam.duration} min</td>
                 <td>{exam.total_marks}</td>
